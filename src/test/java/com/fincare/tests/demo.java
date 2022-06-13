@@ -10,5 +10,7 @@ public class demo
         System.out.println("123456");
         System.out.println("123456");
         System.out.println("1234568");
+        System.out.println("14:25");
+
     }
 }
