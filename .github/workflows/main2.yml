@@ -1,0 +1,79 @@
+name: Android device creator
+
+on:
+  workflow_dispatch:name: Android device creator
+
+on:
+  workflow_dispatch:
+    inputs:
+      device_v_1:
+        description: 'Add version for device 1'
+        required: true
+        default: '28'
+      device_l_1:
+        description: 'Add api level for device 1'
+        required: true
+        default: '28.0.0'
+      device_v_2:
+        description: 'Add version for device 2'
+        required: true
+        default: '29'
+      device_l_2:
+        description: 'Add api level for device 2'
+        required: true
+        default: '29.0.0'
+
+jobs:
+  android-device-creator:
+    runs-on: [self-hosted , androidemulator]
+    steps:
+    - name: Setup Android SDK
+      uses: android-actions/setup-android@v2
+    - name: Create AVDs
+      run: |
+         source /etc/environment
+         $ANDROID_ROOT/sdkmanager "build-tools;${{ github.event.inputs.device_l_1 }}"
+         $ANDROID_ROOT/sdkmanager "platform-tools" "platforms;android-${{ github.event.inputs.device_v_1 }}"
+         $ANDROID_ROOT/sdkmanager "system-images;android-${{ github.event.inputs.device_v_1 }};google_apis;x86"
+         echo no | $ANDROID_ROOT/avdmanager create avd -n Android${{ github.event.inputs.device_v_1 }} -k "system-images;android-${{ github.event.inputs.device_v_1 }};google_apis;x86" --force
+         $ANDROID_ROOT/sdkmanager "build-tools;${{ github.event.inputs.device_l_2 }}"
+         $ANDROID_ROOT/sdkmanager "platform-tools" "platforms;android-${{ github.event.inputs.device_v_2 }}"
+         $ANDROID_ROOT/sdkmanager "system-images;android-${{ github.event.inputs.device_v_2 }};google_apis;x86"
+         echo no | $ANDROID_ROOT/avdmanager create avd -n Android${{ github.event.inputs.device_v_2 }} -k "system-images;android-${{ github.event.inputs.device_v_2 }};google_apis;x86" --force
+
+    inputs:
+      device_v_1:
+        description: 'Add version for device 1'
+        required: true
+        default: '28'
+      device_l_1:
+        description: 'Add api level for device 1'
+        required: true
+        default: '28.0.0'
+      device_v_2:
+        description: 'Add version for device 2'
+        required: true
+        default: '29'
+      device_l_2:
+        description: 'Add api level for device 2'
+        required: true
+        default: '29.0.0'
+
+jobs:
+  android-device-creator:
+    runs-on: [self-hosted , androidemulator]
+    steps:
+    - name: Setup Android SDK
+      uses: android-actions/setup-android@v2
+    - name: Create AVDs
+      run: |
+         source /etc/environment
+         $ANDROID_ROOT/sdkmanager "build-tools;${{ github.event.inputs.device_l_1 }}"
+         $ANDROID_ROOT/sdkmanager "platform-tools" "platforms;android-${{ github.event.inputs.device_v_1 }}"
+         $ANDROID_ROOT/sdkmanager "system-images;android-${{ github.event.inputs.device_v_1 }};google_apis;x86"
+         echo no | $ANDROID_ROOT/avdmanager create avd -n Android${{ github.event.inputs.device_v_1 }} -k "system-images;android-${{ github.event.inputs.device_v_1 }};google_apis;x86" --force
+         $ANDROID_ROOT/sdkmanager "build-tools;${{ github.event.inputs.device_l_2 }}"
+         $ANDROID_ROOT/sdkmanager "platform-tools" "platforms;android-${{ github.event.inputs.device_v_2 }}"
+         $ANDROID_ROOT/sdkmanager "system-images;android-${{ github.event.inputs.device_v_2 }};google_apis;x86"
+         echo no | $ANDROID_ROOT/avdmanager create avd -n Android${{ github.event.inputs.device_v_2 }} -k "system-images;android-${{ github.event.inputs.device_v_2 }};google_apis;x86" --force
+
